@@ -1,0 +1,14 @@
+USE coldchain_sentinel;
+SELECT * FROM batch;
+SELECT b.batch_number,p.product_name,f.name FROM batch b JOIN product p USING(product_id) JOIN facility f USING(facility_id);
+SELECT * FROM excursion WHERE severity='CRITICAL';
+SELECT severity,COUNT(*) total FROM excursion GROUP BY severity;
+SELECT batch_id,COUNT(*) n FROM excursion GROUP BY batch_id HAVING n>1;
+SELECT * FROM batch ORDER BY expiry_date;
+SELECT AVG(risk_score) FROM risk_assessment;
+SELECT * FROM risk_assessment WHERE risk_score > (SELECT AVG(risk_score) FROM risk_assessment);
+SELECT * FROM active_alerts;
+SELECT a.alert_id,a.severity,i.decision FROM alert a JOIN inspection i USING(alert_id);
+SELECT s.sensor_code FROM sensor s JOIN storage_unit u USING(storage_unit_id) WHERE u.facility_id=1;
+SELECT u.storage_unit_id,u.status,s.sensor_code FROM storage_unit u LEFT JOIN sensor s USING(storage_unit_id);
+SELECT * FROM batch WHERE expiry_date <= DATE_ADD(CURDATE(), INTERVAL 60 DAY);
